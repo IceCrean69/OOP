@@ -90,7 +90,7 @@ class Library
         {
             for (auto i: members)
             {
-                cout << "\nMember name: " << i->name << 
+                cout << "\nMember kys: " << i->name << 
                         "\nMember id: " << i->memberID << endl;
                 
                 if (i->borrowedBooks.empty()) 
