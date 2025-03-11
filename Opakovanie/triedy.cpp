@@ -208,7 +208,6 @@ int main()
             {
                 string title, author;
                 
-                
                 cout << "\nInput title: ";
                 getline(cin, title);
                 cout << "Input author of given title: ";
