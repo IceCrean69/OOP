@@ -82,7 +82,36 @@ class KeyValues
 
 
     }
+    Node* RemoveObject(int k)
+    {
+        Node *current = head, *prev = NULL;
+        
+        while(current != NULL && current->data != k)
+        {
+            prev = current;
+            current = current->next;
+        }
 
+        if(current == NULL)
+        {
+            return NULL;
+        }
+
+        if(prev == NULL)
+        {
+            head = current->next;
+        }
+        else
+        {
+            prev->next = current->next;
+            free(current);
+        }
+        current->next = NULL;
+        
+        return current;
+
+
+    }
     void Display()
     {
         if(!head)
@@ -136,16 +165,17 @@ void printTree(Drivers* node, int depth = 0) {
 int main()
 {   
     KeyValues keyvalue;
-
+    Node *head = NULL;
     for(int i = 0; i < 1000; i++)
     {
         keyvalue.insertEnd(i);
     }
+    cout << keyvalue.RemoveObject(5) << endl;
     keyvalue.Display();
     
     StringNode* root = new StringNode("nieco");
     root->right = new StringNode("hello");
-    root->left = new StringNode("niga");
+    root->left = new StringNode("");
 
     DFS(root);
 
