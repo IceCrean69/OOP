@@ -10,7 +10,6 @@ class Car
         int speed;
         int milage;
         bool crashed;
-        string type;
         Car(int s, int m, bool c)
         {
             this->speed = s;
@@ -34,27 +33,39 @@ class Car
                 return;
             }
         }
-        void carType()
-        {
-            cout << this->type << endl;
-        }
 };
 
 class PrivateCar : public Car
 {
     public: 
-        string type = "Private";
         PrivateCar(int speed, int milage, bool crashed) : Car(speed, milage, crashed){}
+
+    void CarGoBRR()
+    {
+        cout << "this car goes brrr" << endl;
+        return;
+    }
+    
+    
 };
 
 class Truck: Car
 {
+    public:
+        Truck (int speed, int milage, bool crashed) : Car(speed, milage, crashed){}
+
+        void trucks()
+        {
+            cout << "i am an amerikan driver" << endl;
+        }
 
 };
 
 int main()
 {
     PrivateCar *pc = new PrivateCar(50,12300, false);
-    pc->carType();
+    Truck *truck = new Truck(40, 29301, true);
+    pc->CarGoBRR();
+    truck->trucks();
     return 0;
 }
