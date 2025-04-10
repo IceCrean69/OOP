@@ -46,7 +46,7 @@ class Account{
         Client *partner;
     public:
         static int accountsCount;
-    Account(int n, Client *c)
+        Account(int n, Client *c)
         {
             this->number = n;
             this->owner = c;
@@ -132,6 +132,21 @@ class Account{
         {
             acc->interestRate = num;
             return;
+        }
+};
+
+class PartnerAccount: public Account
+{
+    private:
+        Client* partner;
+    public:
+        PartnerAccount(int n, Client *o, Client *p): Account(n, o)
+        {
+            this->partner = p;
+        }
+        PartnerAccount(int n, Client *o, Client *p, int ir): Account(n,p,ir)
+        {
+            this->partner = p;
         }
 };
 
@@ -302,15 +317,23 @@ int main(){
     // }
     // file.close();
     // bank->GetAllAccounts();
-    Bank* bank = new Bank();
-    Client* jakub = new Client(58, "jakub");
-    Account* acc  = new Account(1,jakub);
-    cout << acc->GetInterestRate() << endl;
-    acc->ChangeInterest(acc, 15);
-    cout << acc->GetInterestRate() << endl;
-    cout << Client::GetClientCount() << endl;
-    delete bank;
-    delete jakub;
-    cout << "num of accounts : "<< Client::GetClientCount() << endl;
+    // Bank* bank = new Bank();
+    // Client* jakub = new Client(58, "jakub");
+    // Account* acc  = new Account(1,jakub);
+    // cout << acc->GetInterestRate() << endl;
+    // acc->ChangeInterest(acc, 15);
+    // cout << acc->GetInterestRate() << endl;
+    // cout << Client::GetClientCount() << endl;
+    // delete bank;
+    // delete jakub;
+    // cout << "num of accounts : "<< Client::GetClientCount() << endl;
+
+    PartnerAccount* pa;
+    Account *c;
+
+    pa = new PartnerAccount (2, new Client(1,"Jakub"), new Client(2,"Jakub"));
+    c = pa;
+    cout << c->GetOwner()->GetName() << c->GetInterestRate() << endl;
+
     return 0;
 }

@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/ernie/Desktop/Uni/VSB/2nd Semester/OOP",
-      "program": "/Users/ernie/Desktop/Uni/VSB/2nd Semester/OOP/build/Debug/outDebug"
+      "cwd": "/Users/ernie/Desktop/Uni/VSB/2nd Semester/OOP/5.zadanie",
+      "program": "/Users/ernie/Desktop/Uni/VSB/2nd Semester/OOP/5.zadanie/build/Debug/outDebug"
     }
   ]
 }

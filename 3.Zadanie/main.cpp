@@ -1,5 +1,4 @@
 #include <string>
-#include <vector>
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -99,7 +98,19 @@ class Bank{
             clients = new Client*[100];
             accounts = new Account*[100];
         }
-        ~Bank();
+        ~Bank()
+        {
+            for (int i = 0; i < clientsCount; i++)
+            {
+                delete clients[i];
+            }
+            delete[] clients;
+            for (int i = 0; i < accountsCount; i++)
+            {
+                delete accounts[i];
+            }
+            delete[] accounts;
+        }
 
         Client* GetClient(int c)
         {
@@ -108,7 +119,6 @@ class Bank{
                 Client* j = clients[i];
                 if(j->GetCode() == c)
                 {
-                    cout << j->GetName() << j->GetCode() << endl;
                     return j;
                 }
             }
@@ -146,11 +156,14 @@ class Bank{
         void GetAllAccounts()
         {
             if(accountsCount != 0){
-                for (int i = 0; i < accountsCount - 1; i++)
+                for (int i = 0; i < accountsCount; i++)
                 {
                     Account* j = accounts[i];
                     cout <<"Owner: "<<j->GetOwner()->GetName() <<" "<<j->GetOwner()->GetCode() << endl;
-                    cout <<"Partner: "<<j->GetPartner()->GetName()<<" " << j->GetPartner()->GetCode() << endl;
+                    if(j->GetPartner() != NULL)
+                    {
+                        cout <<"Partner: "<<j->GetPartner()->GetName()<<" " << j->GetPartner()->GetCode() << endl;
+                    }
                     cout <<"Interest rate: " <<j->GetInterestRate() << endl;
                 }
             }
@@ -212,7 +225,6 @@ int main(){
         int code;
         while(fileNames >> name >> code)
         {
-            cout << name << " " << code << endl;
             bank->CreateClient(code, name);
         }
     }
@@ -223,46 +235,35 @@ int main(){
         int nameNum1;
         int nameNum2;
         double interestRate;
-
         while(fileAccounts >> number >> nameNum1 >> nameNum2 >> interestRate)
-        {
-            bank->CreateAccount(number, bank->GetClient(nameNum1), bank->GetClient(nameNum2), interestRate);
-        }
-    }
-    else if(file)
-    {
-        int number;
-        int nameNum1;
-
-        while(fileAccounts >> number >> nameNum1)
-        {
-            bank->CreateAccount(number, bank->GetClient(nameNum1));
-        }
-    }
-    else if(file)
-    {
-        int number;
-        int nameNum1;
-        int nameNum2;
-
-        while(fileAccounts >> number >> nameNum1 >> nameNum2)
-        {
-            bank->CreateAccount(number, bank->GetClient(nameNum1), bank->GetClient(nameNum2));
-        }
-    }
-    else if(file)
-    {
-        int number;
-        int nameNum1;
-        double interestRate;
-
-        while(fileAccounts >> number >> nameNum1 >> interestRate)
-        {
-            bank->CreateAccount(number, bank->GetClient(nameNum1), interestRate);
+        {   
+            if(nameNum2 != 0 && nameNum1 != 0 && interestRate != 0)
+            {
+                bank->CreateAccount(number, bank->GetClient(nameNum1), bank->GetClient(nameNum2), interestRate);
+            }
+            else if(nameNum1 != 0 && nameNum2 != 0 && interestRate == 0)
+            {
+                bank->CreateAccount(number, bank->GetClient(nameNum1), bank->GetClient(nameNum2));
+            }
+            else if(nameNum1 != 0 && nameNum2 == 0 && interestRate == 0)
+            {
+                bank->CreateAccount(number, bank->GetClient(nameNum1));
+            }
+            else if(nameNum1 != 0 && nameNum2 == 0 && interestRate !=0)
+            {
+                bank->CreateAccount(number, bank->GetClient(nameNum1), interestRate);
+            }
+            else
+            {
+                cout << "Invalid input" << endl;
+            }
         }
     }
     file.close();
     bank->GetAllAccounts();
+    cout << bank->GetAccount(1)->GetBalance() << endl;
+    bank->GetAccount(1)->AddInterest();
+    cout << bank->GetAccount(1)->GetBalance() << endl;
     // Client* jakub = new Client(58, "jakub");
     // Account* acc1 = new Account(1, jakub);
     // Account* acc2 = new Account(2,jakub, 0.05);
