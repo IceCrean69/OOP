@@ -39,19 +39,23 @@ class Client
 class Account{
     private:
         int number;
-        double balance = 100;
         double interestRate;
         
         Client *owner;
         Client *partner;
+
+    protected:
+        static int balance;
     public:
         static int accountsCount;
+        
         Account(int n, Client *c)
         {
             this->number = n;
             this->owner = c;
             accountsCount++;
         };
+        
         Account(int n, Client *c, double ir)
         {
             this->number = n;
@@ -59,6 +63,7 @@ class Account{
             this->interestRate = ir;
             accountsCount++;
         };
+        
         Account(int n, Client *c, Client *p)
         {
             this->number = n;
@@ -66,6 +71,7 @@ class Account{
             this->partner = p;
             accountsCount++;
         };
+       
         Account(int n, Client *c, Client *p, double ir)
         {
             this->number = n;
@@ -74,6 +80,7 @@ class Account{
             this->interestRate = ir;
             accountsCount++;
         };
+        
         ~Account()
         {
             accountsCount--;
@@ -149,6 +156,36 @@ class PartnerAccount: public Account
             this->partner = p;
         }
 };
+
+class CreditAccount : public Account
+{
+    private: 
+        double credit;
+    public: 
+        CreditAccount(int n, Client* o, double c) : Account (n, o)
+        {
+            this->credit = c;
+        }
+        CreditAccount(int n, Client* o, double ir, double c): Account (n, o, ir)
+        {
+            this->credit = c;
+        }
+        bool CanWithDraw(double a)
+        {
+            return (this->GetBalance() + this->credit >= a);
+        }
+
+        bool Withdraw(double a)
+        {
+            if(balance >= a)
+            {
+                balance = balance - a;
+                return true;
+            }
+            return false;
+        }
+};
+
 
 class Bank{
     private:
@@ -288,6 +325,7 @@ class Bank{
 };
 int Account::accountsCount = 0;
 int Client::clientsCount = 0;
+int Account:: balance = 1000;
 int main(){
     // ifstream file;
     // Bank* bank = new Bank();
@@ -328,12 +366,23 @@ int main(){
     // delete jakub;
     // cout << "num of accounts : "<< Client::GetClientCount() << endl;
 
-    PartnerAccount* pa;
-    Account *c;
+    // PartnerAccount* pa;
+    // Account *c;
 
-    pa = new PartnerAccount (2, new Client(1,"Jakub"), new Client(2,"Jakub"));
-    c = pa;
-    cout << c->GetOwner()->GetName() << c->GetInterestRate() << endl;
+    // pa = new PartnerAccount (2, new Client(1,"Jakub"), new Client(2,"Jakub"));
+    // c = pa;
+    // cout << c->GetOwner()->GetName()<< " " << c->GetInterestRate() << endl;
 
+    Client* o = new Client(1, "Smith");
+    CreditAccount* ca = new CreditAccount(1 , o, 1000);
+
+    cout << ca->CanWithDraw(1001) << endl;
+    
+    Account *a = ca;
+
+    cout << a->CanWithdraw(1000) << endl;
+    cout << a->GetBalance() << endl;
+    a->Deposit(1000);
+    cout << a->GetBalance() << endl;
     return 0;
 }
